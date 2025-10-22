@@ -1,13 +1,17 @@
 class_name CheckoutGame extends Node
 
-const WATER_GROCERY: NodePath = "res://assets/grocery/grocery_data/water.tres"
-const MILK_GROCERY: NodePath = "res://assets/grocery/grocery_data/milk.tres"
+const RECEIPT_COLLAPSED_Y_POS: float = 618
 
-@export_category("Internal")
-@export var receipt_list_label: RichTextLabel
-@export var price_entry_label: Label
 @export var grocery_name_label: Label
 @export var grocery_price_label: Label
+
+@export_category("Receipt")
+@export var receipt_container: MarginContainer
+@export var receipt_list_label: RichTextLabel
+@export var collapse_receipt_button: TextureButton
+
+@export_category("Register")
+@export var price_entry_label: Label
 
 var _game_in_progress: bool = false
 
@@ -25,6 +29,8 @@ var _price_string = "0.00"
 # This is for tracking raw input text, which isn't formatted at all. _price_string is formatted from this value.
 var _input_string = ""
 var _prev_input_string = ""
+
+var _is_receipt_collapsed: bool = false
 
 func start_game(grocery_list: Array[GroceryData]):
 	_grocery_list = grocery_list
@@ -92,7 +98,23 @@ func _start_next_grocery() -> GroceryData:
 	grocery_name_label.text = grocery.friendly_name
 	grocery_price_label.text = GroceryData.format_currency(grocery.price)
 	
+	if grocery.model:
+		get_tree().get_first_node_in_group("world").add_child(grocery.model.instantiate())
+	
 	return grocery
+
+func _on_collapse_button_pressed():
+	_is_receipt_collapsed = !_is_receipt_collapsed
+	
+	var target_y: float = 0
+	if _is_receipt_collapsed:
+		target_y = RECEIPT_COLLAPSED_Y_POS
+	
+	# do tween
+	receipt_container.position.y = target_y
+
+func _ready():
+	collapse_receipt_button.button_down.connect(_on_collapse_button_pressed)
 
 func _process(delta: float) -> void:
 	if !_game_in_progress: return

@@ -1,19 +1,30 @@
-[gd_scene load_steps=9 format=3 uid="uid://dqt7p5g2is0gl"]
+[gd_scene load_steps=11 format=3 uid="uid://dqt7p5g2is0gl"]
 
 [ext_resource type="Texture2D" uid="uid://d4bqunimrt8rq" path="res://assets/ui/receipt_background.png" id="1_3qq62"]
 [ext_resource type="FontFile" uid="uid://werh3a5w6amf" path="res://assets/fonts/Freeroad Regular.ttf" id="1_63vpf"]
 [ext_resource type="Script" uid="uid://8s612t7rywkt" path="res://assets/temp.gd" id="1_iyaqc"]
 [ext_resource type="Script" uid="uid://myccl5xbg82k" path="res://assets/checkout_game/checkout_game.gd" id="1_kye1b"]
 [ext_resource type="FontFile" uid="uid://cxhuxrkwqooyp" path="res://assets/fonts/Freeroad Black.ttf" id="2_3qq62"]
-[ext_resource type="Texture2D" uid="uid://bl8qccrec4ujm" path="res://assets/grocery/art/milk.png" id="3_kllik"]
 [ext_resource type="FontFile" uid="uid://drejshrb25omx" path="res://assets/fonts/Freeroad Bold.ttf" id="3_kye1b"]
 [ext_resource type="FontFile" uid="uid://boguikp4y11aw" path="res://assets/fonts/Freeroad Italic.ttf" id="4_iyaqc"]
+[ext_resource type="Texture2D" uid="uid://clcbswlv0t4fp" path="res://assets/ui/collapse_button_large.png" id="8_1bvrn"]
+[ext_resource type="PackedScene" uid="uid://bfijv4e4atcy6" path="res://assets/grocery/grocery_object/grocery_body.tscn" id="8_kllik"]
 
-[node name="World" type="Node2D" node_paths=PackedStringArray("checkout_game")]
+[sub_resource type="BoxShape3D" id="BoxShape3D_kllik"]
+size = Vector3(14, 0.16455078, 9)
+
+[node name="World" type="Node3D" node_paths=PackedStringArray("checkout_game")]
 script = ExtResource("1_iyaqc")
 checkout_game = NodePath("Checkout Game")
 
-[node name="Checkout Game" type="Control" parent="." node_paths=PackedStringArray("receipt_list_label", "price_entry_label", "grocery_name_label", "grocery_price_label")]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.6328864)
+
+[node name="Current" type="Node3D" parent="." groups=["world"]]
+
+[node name="Checkout Game" type="Control" parent="." node_paths=PackedStringArray("grocery_name_label", "grocery_price_label", "receipt_container", "receipt_list_label", "collapse_receipt_button", "price_entry_label")]
 z_index = 99
 layout_mode = 3
 anchors_preset = 0
@@ -22,12 +33,15 @@ offset_top = 1.0
 offset_right = 1280.0
 offset_bottom = 41.0
 script = ExtResource("1_kye1b")
-receipt_list_label = NodePath("MarginContainer/MarginContainer/VBoxContainer/Receipt")
-price_entry_label = NodePath("Price Entry/Label")
 grocery_name_label = NodePath("Current Grocery/Name")
 grocery_price_label = NodePath("Current Grocery/Price")
+receipt_container = NodePath("Receipt")
+receipt_list_label = NodePath("Receipt/Container/VBoxContainer/Details")
+collapse_receipt_button = NodePath("CollapseReceiptButton")
+price_entry_label = NodePath("Price Entry/Label")
 
 [node name="Current Grocery" type="VBoxContainer" parent="Checkout Game"]
+visible = false
 custom_minimum_size = Vector2(240, 100)
 layout_mode = 0
 offset_left = -736.0
@@ -43,24 +57,23 @@ text = "Name: Empty"
 layout_mode = 2
 text = "Price: 0.00"
 
-[node name="Texture" type="TextureRect" parent="Checkout Game/Current Grocery"]
-layout_mode = 2
-texture = ExtResource("3_kllik")
-
 [node name="Price Entry" type="Control" parent="Checkout Game"]
 anchors_preset = 0
-offset_left = -486.0
-offset_top = 173.0
-offset_right = -446.0
-offset_bottom = 213.0
+offset_left = -492.0
+offset_top = 45.0
+offset_right = -452.0
+offset_bottom = 85.0
 
 [node name="Label" type="Label" parent="Checkout Game/Price Entry"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 52.0
+offset_top = -27.0
+offset_right = 116.0
+offset_bottom = 18.0
+theme_override_font_sizes/font_size = 32
 text = "0.00"
 
-[node name="MarginContainer" type="MarginContainer" parent="Checkout Game"]
+[node name="Receipt" type="MarginContainer" parent="Checkout Game"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -72,21 +85,21 @@ theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 
-[node name="Background" type="TextureRect" parent="Checkout Game/MarginContainer"]
+[node name="Background" type="TextureRect" parent="Checkout Game/Receipt"]
 layout_mode = 2
 texture = ExtResource("1_3qq62")
 stretch_mode = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="Checkout Game/MarginContainer"]
+[node name="Container" type="MarginContainer" parent="Checkout Game/Receipt"]
 layout_mode = 2
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Checkout Game/MarginContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Checkout Game/Receipt/Container"]
 layout_mode = 2
 
-[node name="Header" type="RichTextLabel" parent="Checkout Game/MarginContainer/MarginContainer/VBoxContainer"]
+[node name="Header" type="RichTextLabel" parent="Checkout Game/Receipt/Container/VBoxContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
@@ -101,7 +114,7 @@ fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Store Info" type="RichTextLabel" parent="Checkout Game/MarginContainer/MarginContainer/VBoxContainer"]
+[node name="Store Info" type="RichTextLabel" parent="Checkout Game/Receipt/Container/VBoxContainer"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
@@ -116,7 +129,7 @@ fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Receipt" type="RichTextLabel" parent="Checkout Game/MarginContainer/MarginContainer/VBoxContainer"]
+[node name="Details" type="RichTextLabel" parent="Checkout Game/Receipt/Container/VBoxContainer"]
 custom_minimum_size = Vector2(250, 720)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
@@ -124,3 +137,20 @@ theme_override_constants/paragraph_separation = -9
 text = "sdfsdfsdf
 sdfsdfsd
 sdfsdf"
+
+[node name="CollapseReceiptButton" type="TextureButton" parent="Checkout Game"]
+layout_mode = 0
+offset_left = -285.0
+offset_top = 664.0
+offset_right = 15.0
+offset_bottom = 713.0
+texture_normal = ExtResource("8_1bvrn")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, -0.4177246, -0.46862793)
+shape = SubResource("BoxShape3D_kllik")
+
+[node name="GroceryObject" parent="." instance=ExtResource("8_kllik")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.94975924, 0.08426148, 0.020703316)

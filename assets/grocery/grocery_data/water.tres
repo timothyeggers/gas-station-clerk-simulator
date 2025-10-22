@@ -1,9 +1,11 @@
-[gd_resource type="Resource" script_class="GroceryData" load_steps=2 format=3 uid="uid://b7q7ts2bg8q2s"]
+[gd_resource type="Resource" script_class="GroceryData" load_steps=3 format=3 uid="uid://b7q7ts2bg8q2s"]
 
 [ext_resource type="Script" uid="uid://dh8xwqjbb2cwq" path="res://assets/grocery/grocery_data.gd" id="1_4k1ab"]
+[ext_resource type="PackedScene" uid="uid://bryytph6ppmp3" path="res://assets/grocery/models/milk.tscn" id="1_jpb3u"]
 
 [resource]
 script = ExtResource("1_4k1ab")
+model = ExtResource("1_jpb3u")
 friendly_name = "Water"
 receipt_item_name = "WATER"
 receipt_item_unit = 3

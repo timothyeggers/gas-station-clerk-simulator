@@ -30,6 +30,7 @@ enum ProductUID {
 	NONE = 000
 }
 
+@export var model: PackedScene
 @export var friendly_name: String = "Milk"
 @export var receipt_item_name: String = "MILK"
 @export var receipt_item_unit: ReceiptUnit = ReceiptUnit.PINT
