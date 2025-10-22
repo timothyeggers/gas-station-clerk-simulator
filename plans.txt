@@ -1,0 +1,5 @@
+1) Enter item price, space to confirm (move to bag)
+2) Delete to remove item form bag, re-enter.
+3) Price wrong penalty is displayed at end of checkout, no backing out
+4) Coupon scan mini-game?
+5) Add QR code scanner upgrade, but not all grocerys have QR codes. press (scan) to scan and space to submitif it has QR code, otherwise type in price.

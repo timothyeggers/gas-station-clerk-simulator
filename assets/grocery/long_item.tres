@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GroceryData" load_steps=2 format=3 uid="uid://b0y4tpvo3h65d"]
+
+[ext_resource type="Script" uid="uid://dh8xwqjbb2cwq" path="res://assets/grocery/grocery_data.gd" id="1_wlj4t"]
+
+[resource]
+script = ExtResource("1_wlj4t")
+receipt_item_name = "AAAAAAA"
+price = 31.34
+metadata/_custom_type_script = "uid://dh8xwqjbb2cwq"

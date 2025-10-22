@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="GroceryData" load_steps=2 format=3 uid="uid://b7q7ts2bg8q2s"]
+
+[ext_resource type="Script" uid="uid://dh8xwqjbb2cwq" path="res://assets/grocery/grocery_data.gd" id="1_4k1ab"]
+
+[resource]
+script = ExtResource("1_4k1ab")
+friendly_name = "Water"
+receipt_item_name = "WATER"
+receipt_item_unit = 3
+product_id = 839
+metadata/_custom_type_script = "uid://dh8xwqjbb2cwq"

@@ -1,0 +1,119 @@
+[gd_scene load_steps=8 format=3 uid="uid://dqt7p5g2is0gl"]
+
+[ext_resource type="Texture2D" uid="uid://d4bqunimrt8rq" path="res://assets/ui/receipt_background.png" id="1_3qq62"]
+[ext_resource type="FontFile" uid="uid://werh3a5w6amf" path="res://assets/fonts/Freeroad Regular.ttf" id="1_63vpf"]
+[ext_resource type="Script" uid="uid://8s612t7rywkt" path="res://assets/temp.gd" id="1_iyaqc"]
+[ext_resource type="Script" uid="uid://myccl5xbg82k" path="res://assets/checkout_game/checkout_game.gd" id="1_kye1b"]
+[ext_resource type="FontFile" uid="uid://cxhuxrkwqooyp" path="res://assets/fonts/Freeroad Black.ttf" id="2_3qq62"]
+[ext_resource type="FontFile" uid="uid://drejshrb25omx" path="res://assets/fonts/Freeroad Bold.ttf" id="3_kye1b"]
+[ext_resource type="FontFile" uid="uid://boguikp4y11aw" path="res://assets/fonts/Freeroad Italic.ttf" id="4_iyaqc"]
+
+[node name="World" type="Node2D" node_paths=PackedStringArray("checkout_game")]
+script = ExtResource("1_iyaqc")
+checkout_game = NodePath("Checkout Game")
+
+[node name="Checkout Game" type="Control" parent="." node_paths=PackedStringArray("receipt_list_label", "price_entry_label", "grocery_name_label", "grocery_price_label")]
+z_index = 99
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1240.0
+offset_top = 1.0
+offset_right = 1280.0
+offset_bottom = 41.0
+script = ExtResource("1_kye1b")
+receipt_list_label = NodePath("MarginContainer/MarginContainer/VBoxContainer/Receipt")
+price_entry_label = NodePath("Price Entry/Label")
+grocery_name_label = NodePath("Current Grocery/Name")
+grocery_price_label = NodePath("Current Grocery/Price")
+
+[node name="Current Grocery" type="VBoxContainer" parent="Checkout Game"]
+custom_minimum_size = Vector2(240, 100)
+layout_mode = 0
+offset_left = -736.0
+offset_top = 172.0
+offset_right = -496.0
+offset_bottom = 272.0
+
+[node name="Name" type="Label" parent="Checkout Game/Current Grocery"]
+layout_mode = 2
+
+[node name="Price" type="Label" parent="Checkout Game/Current Grocery"]
+layout_mode = 2
+
+[node name="Price Entry" type="Control" parent="Checkout Game"]
+anchors_preset = 0
+offset_left = -1240.0
+offset_top = -1.0
+offset_right = -1200.0
+offset_bottom = 39.0
+
+[node name="Label" type="Label" parent="Checkout Game/Price Entry"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "0.00"
+
+[node name="MarginContainer" type="MarginContainer" parent="Checkout Game"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -320.0
+offset_bottom = 806.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+
+[node name="Background" type="TextureRect" parent="Checkout Game/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("1_3qq62")
+stretch_mode = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="Checkout Game/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Checkout Game/MarginContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Header" type="RichTextLabel" parent="Checkout Game/MarginContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
+theme_override_fonts/normal_font = ExtResource("1_63vpf")
+theme_override_fonts/bold_font = ExtResource("2_3qq62")
+theme_override_fonts/bold_italics_font = ExtResource("3_kye1b")
+theme_override_fonts/italics_font = ExtResource("4_iyaqc")
+theme_override_font_sizes/normal_font_size = 32
+text = "GENERAL BRAND GAS STATIONS
+"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Store Info" type="RichTextLabel" parent="Checkout Game/MarginContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
+theme_override_constants/paragraph_separation = -4
+bbcode_enabled = true
+text = "(919) 232-3048
+Manager BOB WEISER
+5135 FOUNTAIN AVE
+TAMPA FL 90990
+"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Receipt" type="RichTextLabel" parent="Checkout Game/MarginContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 720)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
+theme_override_constants/paragraph_separation = -9
+text = "sdfsdfsdf
+sdfsdfsd
+sdfsdf"
