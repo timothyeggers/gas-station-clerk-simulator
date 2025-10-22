@@ -5,6 +5,7 @@ enum ReceiptUnit {
 	PINT,
 	QUART,
 	BOTTLE,
+	LOAF,
 	NONE,
 }
 
@@ -13,6 +14,7 @@ static var receipt_unit_table: Dictionary =  {
 	ReceiptUnit.PINT: "PNT",
 	ReceiptUnit.QUART: "QT",
 	ReceiptUnit.BOTTLE: "BTL",
+	ReceiptUnit.LOAF: "LOAF",
 	ReceiptUnit.NONE: ""
 }
 
@@ -24,6 +26,7 @@ enum BrandUID {
 enum ProductUID {
 	MILK = 301,
 	WATER = 839,
+	BREAD = 201,
 	NONE = 000
 }
 

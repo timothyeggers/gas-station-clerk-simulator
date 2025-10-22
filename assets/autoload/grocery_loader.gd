@@ -24,6 +24,7 @@ func get_random_grocery_list(count: int) -> Array[GroceryData]:
 var _grocery_resource_paths: Array[String] = [
 "res://assets/grocery/grocery_data/milk.tres",
 "res://assets/grocery/grocery_data/water.tres",
+"res://assets/grocery/grocery_data/bread.tres",
 ]
 
 func _ready():
