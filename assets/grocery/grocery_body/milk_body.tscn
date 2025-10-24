@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cqa4csxr58yn1"]
+
+[ext_resource type="PackedScene" uid="uid://bfijv4e4atcy6" path="res://assets/grocery/grocery_body/grocery_body.tscn" id="1_423w7"]
+[ext_resource type="PackedScene" uid="uid://bryytph6ppmp3" path="res://assets/grocery/models/milk.tscn" id="2_6e0xq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vhhgq"]
+size = Vector3(0.15544891, 0.29974365, 0.15660858)
+
+[node name="GroceryBody" instance=ExtResource("1_423w7")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="0"]
+transform = Transform3D(0.9999554, 0, 0, 0, 1, 0, 0, 0, 0.9999554, 0.00026320384, 0.06790161, 0.0003149047)
+shape = SubResource("BoxShape3D_vhhgq")
+
+[node name="Milk" parent="." index="1" instance=ExtResource("2_6e0xq")]
+
+[node name="VisibleOnScreenNotifier3D" parent="." index="2"]
+transform = Transform3D(0.9999998, 0, 2.9802317e-08, 0, 1, 0, -2.9802317e-08, 0, 0.9999998, 0, 0.0466765, 0)
+aabb = AABB(-0.07317676, -0.12681536, -0.07292131, 0.14635351, 0.25363073, 0.14584263)

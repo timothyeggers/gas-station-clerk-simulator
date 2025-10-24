@@ -4,6 +4,7 @@ const RECEIPT_COLLAPSED_Y_POS: float = 618
 
 @export var grocery_name_label: Label
 @export var grocery_price_label: Label
+@export var grocery_spawn: Node3D
 
 @export_category("Receipt")
 @export var receipt_container: MarginContainer
@@ -22,6 +23,8 @@ var _submitted_list: Array[GroceryData] = []
 
 # The index of the current grocery in the _grocery_list
 var _index: int = -1
+# The _node is instantiated from grocery_data.scene, and is free'd when submitted.
+var _node: Node3D
 
 # This is the friendly name displayed on the cash register.
 var _price_string = "0.00"
@@ -76,6 +79,10 @@ func submit():
 		receipt_list_label.append_text(grocery.get_receipt_rich_text())
 		receipt_list_label.newline()
 	
+	# Do move animation to bag
+	if _node && is_instance_valid(_node):
+		_node.queue_free()
+	
 	_start_next_grocery()
 
 ## Returns the current grocery being checked out in the mini-game.  Or null, if out of bounds.
@@ -98,8 +105,9 @@ func _start_next_grocery() -> GroceryData:
 	grocery_name_label.text = grocery.friendly_name
 	grocery_price_label.text = GroceryData.format_currency(grocery.price)
 	
-	if grocery.model:
-		get_tree().get_first_node_in_group("world").add_child(grocery.model.instantiate())
+	if grocery.scene:
+		_node = grocery.scene.instantiate()
+		grocery_spawn.add_child(_node)
 	
 	return grocery
 
@@ -113,8 +121,12 @@ func _on_collapse_button_pressed():
 	# do tween
 	receipt_container.position.y = target_y
 
+func _grocery_body_entered_bag(body):
+	submit()
+
 func _ready():
 	collapse_receipt_button.button_down.connect(_on_collapse_button_pressed)
+	Signals.grocery_entered_bag.connect(_grocery_body_entered_bag)
 
 func _process(delta: float) -> void:
 	if !_game_in_progress: return

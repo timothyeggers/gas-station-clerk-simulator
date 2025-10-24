@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dqt7p5g2is0gl"]
+[gd_scene load_steps=19 format=3 uid="uid://dqt7p5g2is0gl"]
 
 [ext_resource type="Texture2D" uid="uid://d4bqunimrt8rq" path="res://assets/ui/receipt_background.png" id="1_3qq62"]
 [ext_resource type="FontFile" uid="uid://werh3a5w6amf" path="res://assets/fonts/Freeroad Regular.ttf" id="1_63vpf"]
@@ -6,35 +6,66 @@
 [ext_resource type="Script" uid="uid://myccl5xbg82k" path="res://assets/checkout_game/checkout_game.gd" id="1_kye1b"]
 [ext_resource type="FontFile" uid="uid://cxhuxrkwqooyp" path="res://assets/fonts/Freeroad Black.ttf" id="2_3qq62"]
 [ext_resource type="FontFile" uid="uid://drejshrb25omx" path="res://assets/fonts/Freeroad Bold.ttf" id="3_kye1b"]
+[ext_resource type="Script" uid="uid://b43n7xn8f0mgb" path="res://assets/player_camera.gd" id="3_v38j1"]
 [ext_resource type="FontFile" uid="uid://boguikp4y11aw" path="res://assets/fonts/Freeroad Italic.ttf" id="4_iyaqc"]
 [ext_resource type="Texture2D" uid="uid://clcbswlv0t4fp" path="res://assets/ui/collapse_button_large.png" id="8_1bvrn"]
-[ext_resource type="PackedScene" uid="uid://bfijv4e4atcy6" path="res://assets/grocery/grocery_object/grocery_body.tscn" id="8_kllik"]
+[ext_resource type="PackedScene" uid="uid://bfjioq6eflmwk" path="res://assets/mannequiny-0.3.0.glb" id="9_1bvrn"]
+[ext_resource type="Script" uid="uid://dttueqnvhy5e5" path="res://assets/bag.gd" id="11_vx7fd"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1bvrn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v38j1"]
+albedo_color = Color(0.078431375, 0.28627452, 0.1764706, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kllik"]
-size = Vector3(14, 0.16455078, 9)
 
-[node name="World" type="Node3D" node_paths=PackedStringArray("checkout_game")]
+[sub_resource type="BoxMesh" id="BoxMesh_1bvrn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kllik"]
+albedo_color = Color(0.047058824, 0.07450981, 0.20392157, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v38j1"]
+size = Vector3(0.44281006, 0.36950684, 0.42736816)
+
+[sub_resource type="BoxMesh" id="BoxMesh_v38j1"]
+
+[node name="World" type="Node3D" node_paths=PackedStringArray("checkout_game") groups=["world"]]
 script = ExtResource("1_iyaqc")
 checkout_game = NodePath("Checkout Game")
 
+[node name="Grocery Spawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0915098, 0.17031217)
+
+[node name="mannequiny-0_3_0" parent="." instance=ExtResource("9_1bvrn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.34448612, -1.0971729)
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(6.1838746, 0, 0, 0, 1, 0, 0, 0, 5.260856, 0.001721859, 0.0042529106, -0.00024938583)
+mesh = SubResource("PlaneMesh_1bvrn")
+surface_material_override/0 = SubResource("StandardMaterial3D_v38j1")
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.38165137, 0.9243064, 0, -0.9243064, 0.38165137, 0, 2.112265, 1.7359376)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.6328864)
+transform = Transform3D(1, 0, 0, 0, 0.9737182, 0.22775613, 0, -0.22775613, 0.9737182, 0, 1.42364, 1.1526742)
+fov = 66.8
+size = 1.5598356
+script = ExtResource("3_v38j1")
 
-[node name="Current" type="Node3D" parent="." groups=["world"]]
-
-[node name="Checkout Game" type="Control" parent="." node_paths=PackedStringArray("grocery_name_label", "grocery_price_label", "receipt_container", "receipt_list_label", "collapse_receipt_button", "price_entry_label")]
+[node name="Checkout Game" type="Control" parent="." node_paths=PackedStringArray("grocery_name_label", "grocery_price_label", "grocery_spawn", "receipt_container", "receipt_list_label", "collapse_receipt_button", "price_entry_label")]
 z_index = 99
 layout_mode = 3
-anchors_preset = 0
-offset_left = 1240.0
-offset_top = 1.0
-offset_right = 1280.0
-offset_bottom = 41.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_kye1b")
 grocery_name_label = NodePath("Current Grocery/Name")
 grocery_price_label = NodePath("Current Grocery/Price")
+grocery_spawn = NodePath("../Grocery Spawn")
 receipt_container = NodePath("Receipt")
 receipt_list_label = NodePath("Receipt/Container/VBoxContainer/Details")
 collapse_receipt_button = NodePath("CollapseReceiptButton")
@@ -58,29 +89,20 @@ layout_mode = 2
 text = "Price: 0.00"
 
 [node name="Price Entry" type="Control" parent="Checkout Game"]
+layout_mode = 1
 anchors_preset = 0
-offset_left = -492.0
-offset_top = 45.0
-offset_right = -452.0
-offset_bottom = 85.0
 
 [node name="Label" type="Label" parent="Checkout Game/Price Entry"]
 layout_mode = 0
-offset_left = 52.0
-offset_top = -27.0
-offset_right = 116.0
-offset_bottom = 18.0
+offset_right = 64.0
+offset_bottom = 45.0
 theme_override_font_sizes/font_size = 32
 text = "0.00"
 
 [node name="Receipt" type="MarginContainer" parent="Checkout Game"]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -320.0
-offset_bottom = 806.0
-grow_horizontal = 0
+offset_right = 350.0
+offset_bottom = 918.0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -139,18 +161,47 @@ sdfsdfsd
 sdfsdf"
 
 [node name="CollapseReceiptButton" type="TextureButton" parent="Checkout Game"]
-layout_mode = 0
-offset_left = -285.0
-offset_top = 664.0
-offset_right = 15.0
-offset_bottom = 713.0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -51.0
+offset_right = 324.0
+offset_bottom = -2.0
+grow_vertical = 0
+shortcut_feedback = false
+shortcut_in_tooltip = false
 texture_normal = ExtResource("8_1bvrn")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="Counter" type="StaticBody3D" parent="."]
+transform = Transform3D(2.647081, 0, 0, 0, 0.7851746, 0, 0, 0, 0.541827, -0.3727845, 0.40341306, 0.20019063)
+metadata/_edit_group_ = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, -0.4177246, -0.46862793)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Counter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 shape = SubResource("BoxShape3D_kllik")
 
-[node name="GroceryObject" parent="." instance=ExtResource("8_kllik")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.94975924, 0.08426148, 0.020703316)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Counter"]
+mesh = SubResource("BoxMesh_1bvrn")
+surface_material_override/0 = SubResource("StandardMaterial3D_kllik")
+
+[node name="Bag" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2768735, 0.35039324, 0.20019063)
+script = ExtResource("11_vx7fd")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Bag"]
+transform = Transform3D(0.9999994, 0, 0, 0, 1, 0, 0, 0, 0.9999999, -0.11215198, -0.12054443, 0.0017700046)
+shape = SubResource("BoxShape3D_v38j1")
+
+[node name="Node3D" type="Node3D" parent="Bag"]
+transform = Transform3D(0.4397205, 0, 0, 0, 0.62632865, 0, 0, 0, 0.4509424, -0.10544729, 0, 0)
+
+[node name="MeshInstance3D" type="CSGMesh3D" parent="Bag/Node3D"]
+mesh = SubResource("BoxMesh_1bvrn")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Bag/Node3D/MeshInstance3D"]
+transform = Transform3D(0.9100011, 0, 0, 0, 1, 0, 0, 0, 0.8918703, 0, 0.037149668, 0)
+operation = 2
+mesh = SubResource("BoxMesh_v38j1")
