@@ -8,6 +8,7 @@ class_name CheckoutGame extends Node
 @export var price_entry_label: Label
 @export var receipt_anchor: Control
 @export var collapse_receipt_button: TextureButton
+@export var submit_button: TextureButton
 
 var _game_in_progress: bool = false
 
@@ -18,8 +19,8 @@ var _submitted_list: Array[GroceryData] = []
 
 # The index of the current grocery in the _grocery_list
 var _index: int = -1
-# The _node is instantiated from grocery_data.scene, and is free'd when submitted.
-var _node: Node3D
+# The _grocery_body is instantiated from grocery_data.scene, and is free'd when submitted.
+var _grocery_body: Node3D
 
 # This is the friendly name displayed on the cash register.
 var _price_string = "0.00"
@@ -29,12 +30,25 @@ var _input_string = ""
 var _prev_input_string = ""
 
 var _current_receipt: Receipt = null
+var _current_receipt_selected: bool = false
 
 func start_game(grocery_list: Array[GroceryData]):
+	if _current_receipt:
+		_current_receipt.queue_free()
+	if _grocery_body:
+		_grocery_body.queue_free()
+	_current_receipt_selected = false
+	_current_receipt = Receipt.create(receipt_anchor)
+	_current_receipt.receipt_selected.connect(_on_receipt_selected)
+	_current_receipt.receipt_deselected.connect(_on_receipt_deselected)
+	_submitted_list = []
+	_index= -1
+	_grocery_body = null
+	_price_string = "0.00"
+	_input_string = ""
+	_prev_input_string = ""
 	_grocery_list = grocery_list
 	_submitted_list = []
-	
-	_current_receipt = Receipt.create(receipt_anchor)
 	
 	_start_next_grocery()
 	
@@ -42,6 +56,7 @@ func start_game(grocery_list: Array[GroceryData]):
 
 func end_game():
 	_game_in_progress = false
+	start_game(_grocery_list)
 
 func get_remaining_groceries_list():
 	pass
@@ -49,11 +64,15 @@ func get_remaining_groceries_list():
 
 ## Submit the current grocery, with the inputted price. Start the next grocery for the checkout mini-game.
 func submit():
+	if !get_current_grocery(): return
+	
+	_current_receipt.dock()
+	
 	var price_entered = float(_price_string)
 	_price_string = "0.00"
 	_input_string = ""
 	_prev_input_string = ""
-		
+	
 	#_remaining_list.remove_at(_index)
 	var grocery = get_current_grocery()
 	_submitted_list.append(grocery)
@@ -65,14 +84,11 @@ func submit():
 		print("Name: %s, Price: %s" % [g.friendly_name, g.price])
 	
 	# Update UI
-	if price_entered != grocery.price:
-		_current_receipt.enter_wrong(grocery.get_receipt_rich_text(price_entered))
-	
-	_current_receipt.enter(grocery.get_receipt_rich_text())
+	_current_receipt.enter(grocery, price_entered)
 	
 	# Do move animation to bag
-	if _node && is_instance_valid(_node):
-		_node.queue_free()
+	if _grocery_body && is_instance_valid(_grocery_body):
+		_grocery_body.queue_free()
 	
 	_start_next_grocery()
 
@@ -88,28 +104,38 @@ func _start_next_grocery() -> GroceryData:
 	_index += 1
 	
 	if _index >= _grocery_list.size():
-		end_game()
 		return
 	
 	grocery =  _grocery_list[_index]
 	
 	grocery_name_label.text = grocery.friendly_name
-	grocery_price_label.text = GroceryData.format_currency(grocery.price)
+	grocery_price_label.text = Game.format_decimal(grocery.price)
 	
 	if grocery.scene:
-		_node = grocery.scene.instantiate()
-		grocery_spawn.add_child(_node)
+		_grocery_body = grocery.scene.instantiate()
+		grocery_spawn.add_child(_grocery_body)
 	
 	return grocery
 
+func _on_receipt_selected():
+	_current_receipt_selected = true
+
+func _on_receipt_deselected():
+	_current_receipt_selected = false
+
 func _on_collapse_button_pressed():
 	_current_receipt.toggle_collapse()
+
+func _on_submit_pressed():
+	if !_current_receipt_selected: return
+	end_game()
 
 func _grocery_body_entered_bag(body):
 	submit()
 
 func _ready():
 	collapse_receipt_button.button_down.connect(_on_collapse_button_pressed)
+	submit_button.button_down.connect(_on_submit_pressed)
 	Signals.grocery_entered_bag.connect(_grocery_body_entered_bag)
 
 func _process(delta: float) -> void:
@@ -145,7 +171,7 @@ func _process(delta: float) -> void:
 	
 	# Insert padded 0's to get a nice price label.
 	if _prev_input_string != _input_string:
-		_price_string = GroceryData.format_currency_string(_input_string)
+		_price_string = Game.format_currency_string(_input_string)
 		_prev_input_string = _input_string
 	
 	if Input.is_action_just_pressed("submit"):

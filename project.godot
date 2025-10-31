@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GroceryLoader="*res://assets/autoload/grocery_loader.gd"
 Signals="*res://assets/autoload/signals.gd"
+Game="*res://assets/autoload/game.gd"
 
 [display]
 

@@ -48,7 +48,7 @@ fov = 66.8
 size = 1.5598356
 script = ExtResource("3_v38j1")
 
-[node name="Checkout Game" type="Control" parent="." node_paths=PackedStringArray("grocery_name_label", "grocery_price_label", "grocery_spawn", "price_entry_label", "receipt_anchor", "collapse_receipt_button")]
+[node name="Checkout Game" type="Control" parent="." node_paths=PackedStringArray("grocery_name_label", "grocery_price_label", "grocery_spawn", "price_entry_label", "receipt_anchor", "collapse_receipt_button", "submit_button")]
 z_index = 99
 layout_mode = 3
 anchors_preset = 15
@@ -62,8 +62,9 @@ grocery_name_label = NodePath("Current Grocery/Name")
 grocery_price_label = NodePath("Current Grocery/Price")
 grocery_spawn = NodePath("../Grocery Spawn")
 price_entry_label = NodePath("Price Entry/Label")
-receipt_anchor = NodePath("ReceiptAnchor")
-collapse_receipt_button = NodePath("CollapseReceiptButton")
+receipt_anchor = NodePath("Receipt/ReceiptAnchor")
+collapse_receipt_button = NodePath("Receipt/CollapseReceiptButton")
+submit_button = NodePath("Submit")
 
 [node name="Current Grocery" type="VBoxContainer" parent="Checkout Game"]
 visible = false
@@ -93,21 +94,40 @@ offset_bottom = 45.0
 theme_override_font_sizes/font_size = 32
 text = "0.00"
 
-[node name="ReceiptAnchor" type="Control" parent="Checkout Game"]
+[node name="Receipt" type="VBoxContainer" parent="Checkout Game"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-grow_vertical = 0
-
-[node name="CollapseReceiptButton" type="TextureButton" parent="Checkout Game"]
-layout_mode = 0
-offset_top = 700.0
+offset_top = -53.0
 offset_right = 300.0
-offset_bottom = 912.0
+grow_vertical = 0
+theme_override_constants/separation = 0
+
+[node name="ReceiptAnchor" type="Control" parent="Checkout Game/Receipt"]
+layout_mode = 2
+
+[node name="CollapseReceiptButton" type="TextureButton" parent="Checkout Game/Receipt"]
+visible = false
+layout_mode = 2
 shortcut_feedback = false
 shortcut_in_tooltip = false
 texture_normal = ExtResource("8_1bvrn")
+
+[node name="Submit" type="TextureButton" parent="Checkout Game"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Counter" type="StaticBody3D" parent="."]
 transform = Transform3D(2.647081, 0, 0, 0, 0.7851746, 0, 0, 0, 0.541827, -0.3727845, 0.40341306, 0.20019063)
