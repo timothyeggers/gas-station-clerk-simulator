@@ -1,14 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://dqt7p5g2is0gl"]
+[gd_scene load_steps=14 format=3 uid="uid://dqt7p5g2is0gl"]
 
-[ext_resource type="FontFile" uid="uid://werh3a5w6amf" path="res://assets/fonts/Freeroad Regular.ttf" id="1_63vpf"]
 [ext_resource type="Script" uid="uid://8s612t7rywkt" path="res://assets/temp.gd" id="1_iyaqc"]
 [ext_resource type="Script" uid="uid://myccl5xbg82k" path="res://assets/checkout_game/checkout_game.gd" id="1_kye1b"]
-[ext_resource type="FontFile" uid="uid://cxhuxrkwqooyp" path="res://assets/fonts/Freeroad Black.ttf" id="2_3qq62"]
-[ext_resource type="FontFile" uid="uid://drejshrb25omx" path="res://assets/fonts/Freeroad Bold.ttf" id="3_kye1b"]
 [ext_resource type="Script" uid="uid://b43n7xn8f0mgb" path="res://assets/player_camera.gd" id="3_v38j1"]
-[ext_resource type="FontFile" uid="uid://boguikp4y11aw" path="res://assets/fonts/Freeroad Italic.ttf" id="4_iyaqc"]
-[ext_resource type="Script" uid="uid://b6f1ger4f6we5" path="res://assets/receipt.gd" id="5_oihnv"]
-[ext_resource type="Texture2D" uid="uid://dpl4xs6o3k2i0" path="res://assets/ui/receipt_header.png" id="5_vx7fd"]
 [ext_resource type="Texture2D" uid="uid://clcbswlv0t4fp" path="res://assets/ui/collapse_button_large.png" id="8_1bvrn"]
 [ext_resource type="PackedScene" uid="uid://bfjioq6eflmwk" path="res://assets/mannequiny-0.3.0.glb" id="9_1bvrn"]
 [ext_resource type="Script" uid="uid://dttueqnvhy5e5" path="res://assets/bag.gd" id="11_vx7fd"]
@@ -54,7 +48,7 @@ fov = 66.8
 size = 1.5598356
 script = ExtResource("3_v38j1")
 
-[node name="Checkout Game" type="Control" parent="." node_paths=PackedStringArray("grocery_name_label", "grocery_price_label", "grocery_spawn", "receipt_list_label", "collapse_receipt_button", "price_entry_label")]
+[node name="Checkout Game" type="Control" parent="." node_paths=PackedStringArray("grocery_name_label", "grocery_price_label", "grocery_spawn", "price_entry_label", "receipt_anchor", "collapse_receipt_button")]
 z_index = 99
 layout_mode = 3
 anchors_preset = 15
@@ -67,9 +61,9 @@ script = ExtResource("1_kye1b")
 grocery_name_label = NodePath("Current Grocery/Name")
 grocery_price_label = NodePath("Current Grocery/Price")
 grocery_spawn = NodePath("../Grocery Spawn")
-receipt_list_label = NodePath("Receipt/Container/VBoxContainer/Details")
-collapse_receipt_button = NodePath("CollapseReceiptButton")
 price_entry_label = NodePath("Price Entry/Label")
+receipt_anchor = NodePath("ReceiptAnchor")
+collapse_receipt_button = NodePath("CollapseReceiptButton")
 
 [node name="Current Grocery" type="VBoxContainer" parent="Checkout Game"]
 visible = false
@@ -99,77 +93,12 @@ offset_bottom = 45.0
 theme_override_font_sizes/font_size = 32
 text = "0.00"
 
-[node name="Receipt" type="MarginContainer" parent="Checkout Game"]
-layout_mode = 0
+[node name="ReceiptAnchor" type="Control" parent="Checkout Game"]
+layout_mode = 1
+anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -222.0
-offset_right = 280.0
 grow_vertical = 0
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_bottom = 20
-script = ExtResource("5_oihnv")
-
-[node name="Background" type="VBoxContainer" parent="Checkout Game/Receipt"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="Header" type="TextureRect" parent="Checkout Game/Receipt/Background"]
-layout_mode = 2
-texture = ExtResource("5_vx7fd")
-stretch_mode = 2
-
-[node name="Background" type="ColorRect" parent="Checkout Game/Receipt/Background"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Container" type="MarginContainer" parent="Checkout Game/Receipt"]
-layout_mode = 2
-size_flags_vertical = 0
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_right = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Checkout Game/Receipt/Container"]
-layout_mode = 2
-
-[node name="Header" type="RichTextLabel" parent="Checkout Game/Receipt/Container/VBoxContainer"]
-custom_minimum_size = Vector2(0, 60)
-layout_mode = 2
-theme_override_colors/default_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
-theme_override_fonts/normal_font = ExtResource("1_63vpf")
-theme_override_fonts/bold_font = ExtResource("2_3qq62")
-theme_override_fonts/bold_italics_font = ExtResource("3_kye1b")
-theme_override_fonts/italics_font = ExtResource("4_iyaqc")
-theme_override_font_sizes/normal_font_size = 24
-text = "GENERAL BRAND GAS STATIONS
-"
-fit_content = true
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Store Info" type="RichTextLabel" parent="Checkout Game/Receipt/Container/VBoxContainer"]
-custom_minimum_size = Vector2(0, 80)
-layout_mode = 2
-theme_override_colors/default_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
-theme_override_constants/paragraph_separation = -4
-bbcode_enabled = true
-text = "(919) 232-3048
-Manager BOB WEISER
-5135 FOUNTAIN AVE
-TAMPA FL 90990
-"
-fit_content = true
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Details" type="RichTextLabel" parent="Checkout Game/Receipt/Container/VBoxContainer"]
-custom_minimum_size = Vector2(250, 0)
-layout_mode = 2
-theme_override_colors/default_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
-theme_override_font_sizes/normal_font_size = 12
-fit_content = true
 
 [node name="CollapseReceiptButton" type="TextureButton" parent="Checkout Game"]
 layout_mode = 0

@@ -1,12 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://dhpire7tr6j2e"]
+[gd_scene load_steps=7 format=3 uid="uid://dhpire7tr6j2e"]
 
-[ext_resource type="Texture2D" uid="uid://dpl4xs6o3k2i0" path="res://assets/ui/receipt_header.png" id="1_vcy8s"]
+[ext_resource type="Script" uid="uid://b6f1ger4f6we5" path="res://assets/receipt/receipt.gd" id="1_hpml5"]
+[ext_resource type="Texture2D" uid="uid://dpl4xs6o3k2i0" path="res://assets/receipt/art/receipt_header.png" id="1_vcy8s"]
 [ext_resource type="FontFile" uid="uid://werh3a5w6amf" path="res://assets/fonts/Freeroad Regular.ttf" id="2_u70gw"]
 [ext_resource type="FontFile" uid="uid://cxhuxrkwqooyp" path="res://assets/fonts/Freeroad Black.ttf" id="3_fv28o"]
 [ext_resource type="FontFile" uid="uid://drejshrb25omx" path="res://assets/fonts/Freeroad Bold.ttf" id="4_phx1a"]
 [ext_resource type="FontFile" uid="uid://boguikp4y11aw" path="res://assets/fonts/Freeroad Italic.ttf" id="5_5xtj3"]
 
-[node name="Receipt" type="MarginContainer"]
+[node name="Receipt" type="MarginContainer" node_paths=PackedStringArray("receipt_list_label")]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -16,6 +17,8 @@ grow_vertical = 0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_bottom = 20
+script = ExtResource("1_hpml5")
+receipt_list_label = NodePath("Container/VBoxContainer/Details")
 
 [node name="Background" type="VBoxContainer" parent="."]
 layout_mode = 2

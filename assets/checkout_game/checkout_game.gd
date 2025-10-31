@@ -4,8 +4,10 @@ class_name CheckoutGame extends Node
 @export var grocery_price_label: Label
 @export var grocery_spawn: Node3D
 
-@export_category("Register")
+@export_category("Internal")
 @export var price_entry_label: Label
+@export var receipt_anchor: Control
+@export var collapse_receipt_button: TextureButton
 
 var _game_in_progress: bool = false
 
@@ -26,13 +28,13 @@ var _price_string = "0.00"
 var _input_string = ""
 var _prev_input_string = ""
 
-var _is_receipt_collapsed: bool = false
+var _current_receipt: Receipt = null
 
 func start_game(grocery_list: Array[GroceryData]):
 	_grocery_list = grocery_list
 	_submitted_list = []
-	receipt_list_label.clear()
-	receipt_list_label.append_text("[fill]")
+	
+	_current_receipt = Receipt.create(receipt_anchor)
 	
 	_start_next_grocery()
 	
@@ -64,13 +66,9 @@ func submit():
 	
 	# Update UI
 	if price_entered != grocery.price:
-		receipt_list_label.append_text("[s]%s[/s]" % grocery.get_receipt_rich_text(price_entered))
-		receipt_list_label.newline()
-		receipt_list_label.append_text(grocery.get_receipt_rich_text())
-		receipt_list_label.newline()
-	else:
-		receipt_list_label.append_text(grocery.get_receipt_rich_text())
-		receipt_list_label.newline()
+		_current_receipt.enter_wrong(grocery.get_receipt_rich_text(price_entered))
+	
+	_current_receipt.enter(grocery.get_receipt_rich_text())
 	
 	# Do move animation to bag
 	if _node && is_instance_valid(_node):
@@ -105,12 +103,7 @@ func _start_next_grocery() -> GroceryData:
 	return grocery
 
 func _on_collapse_button_pressed():
-	_is_receipt_collapsed = !_is_receipt_collapsed
-	
-	if _is_receipt_collapsed:
-		receipt_list_label.hide()
-	else:
-		receipt_list_label.show()
+	_current_receipt.toggle_collapse()
 
 func _grocery_body_entered_bag(body):
 	submit()
