@@ -1,0 +1,78 @@
+[gd_scene load_steps=6 format=3 uid="uid://dhpire7tr6j2e"]
+
+[ext_resource type="Texture2D" uid="uid://dpl4xs6o3k2i0" path="res://assets/ui/receipt_header.png" id="1_vcy8s"]
+[ext_resource type="FontFile" uid="uid://werh3a5w6amf" path="res://assets/fonts/Freeroad Regular.ttf" id="2_u70gw"]
+[ext_resource type="FontFile" uid="uid://cxhuxrkwqooyp" path="res://assets/fonts/Freeroad Black.ttf" id="3_fv28o"]
+[ext_resource type="FontFile" uid="uid://drejshrb25omx" path="res://assets/fonts/Freeroad Bold.ttf" id="4_phx1a"]
+[ext_resource type="FontFile" uid="uid://boguikp4y11aw" path="res://assets/fonts/Freeroad Italic.ttf" id="5_5xtj3"]
+
+[node name="Receipt" type="MarginContainer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -222.0
+offset_right = 280.0
+grow_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 20
+
+[node name="Background" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Header" type="TextureRect" parent="Background"]
+layout_mode = 2
+texture = ExtResource("1_vcy8s")
+stretch_mode = 2
+
+[node name="Background" type="ColorRect" parent="Background"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Container" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Container"]
+layout_mode = 2
+
+[node name="Header" type="RichTextLabel" parent="Container/VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
+theme_override_fonts/normal_font = ExtResource("2_u70gw")
+theme_override_fonts/bold_font = ExtResource("3_fv28o")
+theme_override_fonts/bold_italics_font = ExtResource("4_phx1a")
+theme_override_fonts/italics_font = ExtResource("5_5xtj3")
+theme_override_font_sizes/normal_font_size = 24
+text = "GENERAL BRAND GAS STATIONS
+"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Store Info" type="RichTextLabel" parent="Container/VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
+theme_override_constants/paragraph_separation = -4
+bbcode_enabled = true
+text = "(919) 232-3048
+Manager BOB WEISER
+5135 FOUNTAIN AVE
+TAMPA FL 90990
+"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Details" type="RichTextLabel" parent="Container/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
+theme_override_font_sizes/normal_font_size = 12
+fit_content = true

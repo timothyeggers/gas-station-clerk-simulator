@@ -1,15 +1,8 @@
 class_name CheckoutGame extends Node
 
-const RECEIPT_COLLAPSED_Y_POS: float = 618
-
 @export var grocery_name_label: Label
 @export var grocery_price_label: Label
 @export var grocery_spawn: Node3D
-
-@export_category("Receipt")
-@export var receipt_container: MarginContainer
-@export var receipt_list_label: RichTextLabel
-@export var collapse_receipt_button: TextureButton
 
 @export_category("Register")
 @export var price_entry_label: Label
@@ -114,12 +107,10 @@ func _start_next_grocery() -> GroceryData:
 func _on_collapse_button_pressed():
 	_is_receipt_collapsed = !_is_receipt_collapsed
 	
-	var target_y: float = 0
 	if _is_receipt_collapsed:
-		target_y = RECEIPT_COLLAPSED_Y_POS
-	
-	# do tween
-	receipt_container.position.y = target_y
+		receipt_list_label.hide()
+	else:
+		receipt_list_label.show()
 
 func _grocery_body_entered_bag(body):
 	submit()

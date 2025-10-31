@@ -4,8 +4,5 @@ extends Node3D
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("undo"):
-		var arr: Array[GroceryData] = []
-		for i in 10:
-			arr.append(load("res://assets/grocery/grocery_data/milk.tres"))
-		checkout_game.start_game(arr)
+		checkout_game.start_game(GroceryLoader.get_random_grocery_list(20))
 		set_process(false)
